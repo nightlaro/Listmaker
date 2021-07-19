@@ -30,16 +30,10 @@ hs_err_pid*
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-.idea/
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
-build.gradle
-gradle.properties
-gradle/*
-gradlew
-gradlew.bat
-settings.gradle
+.idea
