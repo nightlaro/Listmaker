@@ -61,21 +61,20 @@ class MainActivity : AppCompatActivity() {
         toDoTitleEditText.inputType = InputType.TYPE_CLASS_TEXT
 
         myDialog.setTitle(dialogTitle)
-        myDialog.setView(toDoTitleEditText)
-        myDialog.setPositiveButton(positiveButtonTitle) {
-            dialog, _ ->
+            .setView(toDoTitleEditText)
+            .setPositiveButton(positiveButtonTitle) { dialog, _ ->
                 val input = toDoTitleEditText.text.toString()
                 val adapter = todoListRecyclerView.adapter as ToDoListAdapter
                 val list = Tasklist(input)
                 dataManager.saveList(list)
                 adapter.addList(list)
                 dialog.dismiss()
-        }
-        myDialog.setNegativeButton(negativeButtonTitle) {
-                dialog, _ ->
-            dialog.dismiss()
-        }
-        myDialog.create().show()
+            }
+            .setNegativeButton(negativeButtonTitle) { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
     }
 
 }
