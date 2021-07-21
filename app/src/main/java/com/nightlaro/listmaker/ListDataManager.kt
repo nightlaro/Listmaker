@@ -1,9 +1,6 @@
 package com.nightlaro.listmaker
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.content.SharedPreferences.Editor
-import androidx.core.content
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
