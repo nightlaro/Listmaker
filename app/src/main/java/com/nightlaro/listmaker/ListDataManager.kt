@@ -1,20 +1,19 @@
 package com.nightlaro.listmaker
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
-
 class ListDataManager(private val context: Context) {
+    private val sharedPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     fun saveList(list : Tasklist) {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit(commit = true) {
             putStringSet(list.name, list.tasks.toHashSet())
         }
 
     }
     fun readList(): MutableList<Tasklist> {
-        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
         val contents = sharedPrefs.all
         val taskLists = mutableListOf<Tasklist>()
 
