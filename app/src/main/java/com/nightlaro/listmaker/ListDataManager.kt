@@ -8,7 +8,7 @@ import androidx.preference.PreferenceManager
 class ListDataManager(private val context: Context) {
     private val sharedPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     fun saveList(list : Tasklist) {
-        sharedPrefs.edit(commit = true) {
+        sharedPrefs.edit() {
             putStringSet(list.name, list.tasks.toHashSet())
         }
 
