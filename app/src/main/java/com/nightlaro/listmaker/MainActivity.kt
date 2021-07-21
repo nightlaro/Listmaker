@@ -1,5 +1,6 @@
 package com.nightlaro.listmaker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
@@ -12,10 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
     lateinit var todoListRecyclerView: RecyclerView
-    val dataManager: ListDataManager = ListDataManager(this)
+    private val dataManager: ListDataManager = ListDataManager(this)
+
+    companion object {
+        const val INTENT_LIST_KEY = "list"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +80,12 @@ class MainActivity : AppCompatActivity() {
             }
             .create()
             .show()
+    }
+
+    private fun showTaskListItems(list : Tasklist) {
+        val taskListItem = Intent(this, DetailActivity::class.java)
+        taskListItem.putExtra(INTENT_LIST_KEY, list)
+        startActivity(taskListItem)
     }
 
 }
