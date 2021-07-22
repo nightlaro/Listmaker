@@ -6,14 +6,15 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
 class ListDataManager(private val context: Context) {
-    private val sharedPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
     fun saveList(list : Tasklist) {
+        val sharedPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         sharedPrefs.edit() {
             putStringSet(list.name, list.tasks.toHashSet())
         }
 
     }
     fun readList(): MutableList<Tasklist> {
+        val sharedPrefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val contents = sharedPrefs.all
         val taskLists = mutableListOf<Tasklist>()
 
