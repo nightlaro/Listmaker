@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity: AppCompatActivity() {
+class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
 
     lateinit var todoListRecyclerView: RecyclerView
-    private val dataManager: ListDataManager = ListDataManager(this)
+    val dataManager: ListDataManager = ListDataManager(this)
 
     companion object {
         const val INTENT_LIST_KEY = "list"
@@ -32,7 +32,7 @@ class MainActivity: AppCompatActivity() {
         val lists = dataManager.readList()
         todoListRecyclerView = findViewById(R.id.lists_recyclerview)
         todoListRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoListRecyclerView.adapter = ToDoListAdapter(lists)
+        todoListRecyclerView.adapter = ToDoListAdapter(lists, this)
 
         fab.setOnClickListener { _ ->
             showCreateToDoListDialog()
@@ -74,6 +74,7 @@ class MainActivity: AppCompatActivity() {
                 dataManager.saveList(list)
                 adapter.addList(list)
                 dialog.dismiss()
+                showTaskListItems(list)
             }
             .setNegativeButton(negativeButtonTitle) { dialog, _ ->
                 dialog.dismiss()
@@ -86,6 +87,10 @@ class MainActivity: AppCompatActivity() {
         val taskListItem = Intent(this, DetailActivity::class.java)
         taskListItem.putExtra(INTENT_LIST_KEY, list)
         startActivity(taskListItem)
+    }
+
+    override fun listItemClicked(list: Tasklist) {
+        showTaskListItems(list)
     }
 
 }
