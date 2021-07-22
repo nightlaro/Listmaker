@@ -2,8 +2,8 @@ package com.nightlaro.listmaker
 
 import android.os.Parcel
 import android.os.Parcelable
-
-class Tasklist(val name: String,
+//initially thought data class can't contain methods for some reason
+data class Tasklist(val name: String,
                val tasks: MutableList<String> = mutableListOf()): Parcelable {
     //no clue what this parcel thing is doing at this moment
     constructor(parcel: Parcel) : this( //what?
@@ -12,7 +12,7 @@ class Tasklist(val name: String,
     )
 
     companion object CREATOR: Parcelable.Creator<Tasklist> {
-        override fun createFromParcel(source: Parcel): Tasklist = Tasklist(source) // where did source come from?
+        override fun createFromParcel(source: Parcel): Tasklist = Tasklist(source)
 
         override fun newArray(size: Int): Array<Tasklist?> = arrayOfNulls(size)
 
