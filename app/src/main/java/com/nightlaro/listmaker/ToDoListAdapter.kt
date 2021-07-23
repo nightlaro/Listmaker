@@ -1,11 +1,13 @@
 package com.nightlaro.listmaker
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class ToDoListAdapter(private val lists: MutableList<Tasklist>,
-                      val clickListener: ToDoListClickListener): RecyclerView.Adapter<ToDoListViewHolder>() {
+                      val clickListener: ToDoListClickListener): RecyclerView.Adapter<ToDoListAdapter.ToDoListViewHolder>() {
 
     //ok now we're doing interface... (?)
     interface ToDoListClickListener {
@@ -33,6 +35,12 @@ class ToDoListAdapter(private val lists: MutableList<Tasklist>,
     fun addList(list : Tasklist) {
         lists.add(list)
         notifyItemInserted(lists.size - 1)
+    }
+
+    class ToDoListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+
+        var listPositionTextView = itemView.findViewById<TextView>(R.id.itemNumber)
+        var listTitleTextView = itemView.findViewById<TextView>(R.id.itemString)
     }
 
 }

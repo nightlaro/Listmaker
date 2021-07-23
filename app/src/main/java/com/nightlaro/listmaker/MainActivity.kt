@@ -20,6 +20,7 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
 
     companion object {
         const val INTENT_LIST_KEY = "list"
+        const val LIST_DETAIL_REQUEST_CODE = 420
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,6 +39,22 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
             showCreateToDoListDialog()
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LIST_DETAIL_REQUEST_CODE) {
+            data?.let {
+                val list = data.getParcelableExtra<Tasklist>(INTENT_LIST_KEY)!!
+                dataManager.saveList(list)
+                updateList()
+            }
+        }
+    }
+
+    private fun updateList() {
+        val lists = dataManager.readList()
+        todoListRecyclerView.adapter = ToDoListAdapter(lists, this) //refreshes recycler view
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -86,7 +103,7 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
     private fun showTaskListItems(list : Tasklist) {
         val taskListItem = Intent(this, DetailActivity::class.java)
         taskListItem.putExtra(INTENT_LIST_KEY, list)
-        startActivity(taskListItem)
+        startActivityForResult(taskListItem, LIST_DETAIL_REQUEST_CODE)
     }
 
     override fun listItemClicked(list: Tasklist) {
