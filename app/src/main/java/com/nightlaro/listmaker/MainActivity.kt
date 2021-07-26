@@ -102,9 +102,7 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
     }
 
     private fun showTaskListItems(list : Tasklist) {
-        val taskListItem = Intent(this, DetailActivity::class.java)
-        taskListItem.putExtra(INTENT_LIST_KEY, list)
-        startActivityForResult(taskListItem, LIST_DETAIL_REQUEST_CODE)
+        DetailActivity.launchDetailActivity(this, list)
     }
 
     override fun listItemClicked(list: Tasklist) {
