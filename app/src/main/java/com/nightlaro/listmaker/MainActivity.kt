@@ -15,13 +15,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
 
-    lateinit var todoListRecyclerView: RecyclerView
-    val dataManager: ListDataManager = ListDataManager(this)
-
     companion object {
         const val INTENT_LIST_KEY = "list"
         const val LIST_DETAIL_REQUEST_CODE = 420
     }
+
+    private lateinit var todoListRecyclerView: RecyclerView
+    private val dataManager: ListDataManager = ListDataManager(this)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
