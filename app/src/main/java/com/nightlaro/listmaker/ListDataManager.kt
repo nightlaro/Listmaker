@@ -2,6 +2,7 @@ package com.nightlaro.listmaker
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
@@ -19,8 +20,8 @@ class ListDataManager(private val context: Context) {
         val taskLists = mutableListOf<Tasklist>()
 
         for (taskList in contents) {
-            val taskItems = mutableListOf(taskList.value as HashSet<String>)
-            val list = Tasklist(taskList.key, taskItems as MutableList<String>)
+            val taskItems = (taskList.value as HashSet<String>).toMutableList() // Actually convert (create) it and not just cast it at the end
+            val list = Tasklist(taskList.key, taskItems)
             taskLists.add(list)
         }
         return taskLists

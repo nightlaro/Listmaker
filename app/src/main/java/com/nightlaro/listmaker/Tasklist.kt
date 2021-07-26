@@ -2,6 +2,8 @@ package com.nightlaro.listmaker
 
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
+
 //initially thought data class can't contain methods for some reason
 data class Tasklist(val name: String,
                val tasks: MutableList<String> = mutableListOf()): Parcelable {
