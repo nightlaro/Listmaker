@@ -13,16 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
+class MainActivity: AppCompatActivity(), TodoListFragment.OnFragmentInteractionListener {
 
     companion object {
         const val INTENT_LIST_KEY = "list"
         const val LIST_DETAIL_REQUEST_CODE = 420
     }
 
-    private lateinit var todoListRecyclerView: RecyclerView
-    private val dataManager: ListDataManager = ListDataManager(this)
-
+    private val todoListFragment = TodoListFragment.newInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,15 +29,9 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
         val fab = findViewById<FloatingActionButton>(R.id.add_button)
         setSupportActionBar(toolbar)
 
-        val lists = dataManager.readList()
-        todoListRecyclerView = findViewById(R.id.lists_recyclerview)
-        todoListRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoListRecyclerView.adapter = ToDoListAdapter(lists, this)
-
         fab.setOnClickListener { _ ->
             showCreateToDoListDialog()
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -47,15 +39,9 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
         if (requestCode == LIST_DETAIL_REQUEST_CODE) {
             data?.let {
                 val list = data.getParcelableExtra<Tasklist>(INTENT_LIST_KEY)!!
-                dataManager.saveList(list)
-                updateList()
+                todoListFragment.saveList(list)
             }
         }
-    }
-
-    private fun updateList() {
-        val lists = dataManager.readList()
-        todoListRecyclerView.adapter = ToDoListAdapter(lists, this) //refreshes recycler view
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,10 +73,8 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
             .setView(toDoTitleEditText)
             .setPositiveButton(positiveButtonTitle) { dialog, _ ->
                 val input = toDoTitleEditText.text.toString()
-                val adapter = todoListRecyclerView.adapter as ToDoListAdapter
                 val list = Tasklist(input)
-                dataManager.saveList(list)
-                adapter.addList(list)
+                todoListFragment.addList(list)
                 dialog.dismiss()
                 showTaskListItems(list)
             }
@@ -105,7 +89,7 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
         DetailActivity.launchDetailActivity(this, list)
     }
 
-    override fun listItemClicked(list: Tasklist) {
+    override fun onTodoListClicked(list: Tasklist) {
         showTaskListItems(list)
     }
 
