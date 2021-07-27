@@ -32,6 +32,10 @@ class MainActivity: AppCompatActivity(), TodoListFragment.OnFragmentInteractionL
         fab.setOnClickListener { _ ->
             showCreateToDoListDialog()
         }
+        //
+        supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container, todoListFragment)
+            .commit()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
