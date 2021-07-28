@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.text.InputType
 import android.util.Log
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -47,6 +48,9 @@ class DetailActivity : AppCompatActivity() {
         val intent = Intent()
         intent.putExtras(bundle)
         setResult(Activity.RESULT_OK, intent)
+        
+        // how to show a toast
+        Toast.makeText(this, "Saving list", Toast.LENGTH_LONG).show()
         super.onBackPressed()
     }
 
