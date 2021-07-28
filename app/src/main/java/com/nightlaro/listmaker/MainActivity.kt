@@ -3,6 +3,7 @@ package com.nightlaro.listmaker
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
@@ -88,7 +89,7 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
             .setPositiveButton(positiveButtonTitle) { dialog, _ ->
                 val input = toDoTitleEditText.text.toString()
                 val adapter = todoListRecyclerView.adapter as ToDoListAdapter
-                val list = Tasklist(input)
+                val list = Tasklist(input, listOf())
                 dataManager.saveList(list)
                 adapter.addList(list)
                 dialog.dismiss()

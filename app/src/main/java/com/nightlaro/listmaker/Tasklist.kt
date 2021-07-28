@@ -6,7 +6,7 @@ import android.util.Log
 
 //initially thought data class can't contain methods for some reason
 data class Tasklist(val name: String,
-               val tasks: MutableList<String> = mutableListOf()): Parcelable {
+               val tasks: List<String>) : Parcelable {
     //no clue what this parcel thing is doing at this moment
     constructor(parcel: Parcel) : this( //what?
         parcel.readString()!!,

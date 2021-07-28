@@ -60,11 +60,13 @@ class DetailActivity : AppCompatActivity() {
             .setView(taskEditText)
             .setPositiveButton(R.string.add_task) { dialog, _ ->
                 val task = taskEditText.text.toString()
-                list.tasks.add(task)
+                val oldList = list
+                list = oldList.copy(tasks = oldList.tasks + task)
+                taskListRecyclerView.adapter = TaskListAdapter(list) //Yeah... :c
+                Log.d("ADD_TASK", "Current task list: ${list.tasks}")
                 dialog.dismiss()
             }
             .create()
             .show()
-
     }
 }
