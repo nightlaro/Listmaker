@@ -65,7 +65,6 @@ class DetailActivity : AppCompatActivity() {
                 val oldList = taskListAdapter.list
                 val newList = oldList.copy(tasks = oldList.tasks + task)
                 taskListAdapter.list = newList
-                Log.d("ADD_TASK", "Current task list: ${taskListAdapter.list.tasks}")
                 dialog.dismiss()
             }
             .create()
