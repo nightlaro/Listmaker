@@ -23,6 +23,7 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
 
     private lateinit var todoListRecyclerView: RecyclerView
     private val dataManager: ListDataManager = ListDataManager(this)
+    private lateinit var toDoListAdapter: ToDoListAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,9 +34,10 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
         setSupportActionBar(toolbar)
 
         val lists = dataManager.readList()
+        toDoListAdapter = ToDoListAdapter(lists, this)
         todoListRecyclerView = findViewById(R.id.lists_recyclerview)
         todoListRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoListRecyclerView.adapter = ToDoListAdapter(lists, this)
+        todoListRecyclerView.adapter = toDoListAdapter
 
         fab.setOnClickListener { _ ->
             showCreateToDoListDialog()
@@ -56,7 +58,7 @@ class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
 
     private fun updateList() {
         val lists = dataManager.readList()
-        todoListRecyclerView.adapter = ToDoListAdapter(lists, this) //refreshes recycler view
+        toDoListAdapter.currentLists = lists
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

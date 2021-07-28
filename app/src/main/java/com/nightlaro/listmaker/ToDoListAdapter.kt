@@ -7,9 +7,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class ToDoListAdapter(private var lists: List<Tasklist>,
+class ToDoListAdapter(lists: List<Tasklist>,
                       private val clickListener: ToDoListClickListener): RecyclerView.Adapter<ToDoListAdapter.ToDoListViewHolder>() {
-
+    var currentLists = lists
+        set(value) {
+            if (value == field) return
+            field = value
+            notifyDataSetChanged()
+        }
     //ok now we're doing interface... (?)
     interface ToDoListClickListener {
         fun listItemClicked(list: Tasklist)
@@ -26,19 +31,19 @@ class ToDoListAdapter(private var lists: List<Tasklist>,
     override fun onBindViewHolder(holder : ToDoListViewHolder, position: Int) {
         holder.listPositionTextView.text = (position + 1).toString()
         Log.d("Something_COOL", "onBindViewHolder $position HASHCODE: ${holder.hashCode()}")
-        holder.listTitleTextView.text = lists[position].name
+        holder.listTitleTextView.text = currentLists[position].name
         holder.itemView.setOnClickListener {
-            clickListener.listItemClicked(lists[position])
+            clickListener.listItemClicked(currentLists[position])
         }
     }
 
     override fun getItemCount(): Int {
-        return lists.size
+        return currentLists.size
     }
 
     fun addList(list : Tasklist) {
-        val oldList = lists
-        lists = oldList + list
+        val oldList = currentLists
+        currentLists = oldList + list
         notifyDataSetChanged()
     }
 
