@@ -24,13 +24,11 @@ class ToDoListAdapter(lists: List<Tasklist>,
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.todo_list_view_holder, parent, false)
         val viewHolder = ToDoListViewHolder(view)
-        Log.d("Something_COOL", "onCreateViewHolder ${viewHolder.hashCode()}")
         return viewHolder
     }
 
     override fun onBindViewHolder(holder : ToDoListViewHolder, position: Int) {
         holder.listPositionTextView.text = (position + 1).toString()
-        Log.d("Something_COOL", "onBindViewHolder $position HASHCODE: ${holder.hashCode()}")
         holder.listTitleTextView.text = currentLists[position].name
         holder.itemView.setOnClickListener {
             clickListener.listItemClicked(currentLists[position])
