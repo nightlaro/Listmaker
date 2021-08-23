@@ -1,7 +1,9 @@
 package com.nightlaro.listmaker
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Parcel
 import android.text.InputType
 import android.view.Menu
 import android.view.MenuItem
@@ -12,10 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity(), ToDoListAdapter.ToDoListClickListener {
 
-    lateinit var todoListRecyclerView: RecyclerView
-    val dataManager: ListDataManager = ListDataManager(this)
+    companion object {
+        const val INTENT_LIST_KEY = "list"
+        const val LIST_DETAIL_REQUEST_CODE = 420
+    }
+
+    private lateinit var todoListRecyclerView: RecyclerView
+    private val dataManager: ListDataManager = ListDataManager(this)
+    private lateinit var toDoListAdapter: ToDoListAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,14 +34,31 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val lists = dataManager.readList()
+        toDoListAdapter = ToDoListAdapter(lists, this)
         todoListRecyclerView = findViewById(R.id.lists_recyclerview)
         todoListRecyclerView.layoutManager = LinearLayoutManager(this)
-        todoListRecyclerView.adapter = ToDoListAdapter(lists)
+        todoListRecyclerView.adapter = toDoListAdapter
 
         fab.setOnClickListener { _ ->
             showCreateToDoListDialog()
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == LIST_DETAIL_REQUEST_CODE) {
+            data?.let {
+                val list = data.getParcelableExtra<Tasklist>(INTENT_LIST_KEY)!!
+                dataManager.saveList(list)
+                updateList()
+            }
+        }
+    }
+
+    private fun updateList() {
+        val lists = dataManager.readList()
+        toDoListAdapter.currentLists = lists
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -65,16 +91,25 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton(positiveButtonTitle) { dialog, _ ->
                 val input = toDoTitleEditText.text.toString()
                 val adapter = todoListRecyclerView.adapter as ToDoListAdapter
-                val list = Tasklist(input)
+                val list = Tasklist(input, listOf())
                 dataManager.saveList(list)
                 adapter.addList(list)
                 dialog.dismiss()
+                showTaskListItems(list)
             }
             .setNegativeButton(negativeButtonTitle) { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
             .show()
+    }
+
+    private fun showTaskListItems(list : Tasklist) {
+        DetailActivity.launchDetailActivity(this, list)
+    }
+
+    override fun listItemClicked(list: Tasklist) {
+        showTaskListItems(list)
     }
 
 }
